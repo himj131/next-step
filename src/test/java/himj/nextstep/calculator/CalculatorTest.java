@@ -1,5 +1,6 @@
 package himj.nextstep.calculator;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -35,5 +36,10 @@ class CalculatorTest {
     public void add() {
         assertEquals(7, cal.add(3,4));
         System.out.println(cal.add(3,4));
+    }
+
+    @AfterEach
+    void tearDown() {
+        System.out.println("tear Down!");
     }
 }
