@@ -1,7 +1,5 @@
 package himj.nextstep.calculator;
 
-import org.springframework.util.StringUtils;
-
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
