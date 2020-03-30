@@ -1,4 +1,4 @@
-package model;
+package himj.nextstep.model;
 
 public class User {
     private String userId;
