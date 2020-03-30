@@ -3,7 +3,10 @@ package himj.nextstep.webserver;
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
+import java.util.Map;
 
+import himj.nextstep.util.HttpRequestUtils;
+import model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +30,13 @@ public class RequestHandler extends Thread {
             String[] splited = line.split(" ");
             String path = splited[1];
 
+            if(path.startsWith("/user/create?")) {
+                int index = path.indexOf("?");
+                String queryString = path.substring(index+1);
+                Map<String, String> paramMap = HttpRequestUtils.parseQueryString(queryString);
+                User user = new User(paramMap.get("userId"), paramMap.get("password"), paramMap.get("name"), paramMap.get("email"));
+                log.debug("User: {}", user);
+            }
 //            while (!"".equals(line)) {
 //                log.debug("header: {}", line);
 
