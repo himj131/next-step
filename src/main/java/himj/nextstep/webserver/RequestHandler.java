@@ -28,25 +28,24 @@ public class RequestHandler extends Thread {
             String line = br.readLine();
             if(line == null) return;
             String[] splited = line.split(" ");
+            int contentLength = 0;
+            while (!line.equals("")) {
+                log.debug("header : {}", line);
+                line = br.readLine();
+
+                if(line.contains("Content-Length")) {
+                    contentLength = getContentLength(line);
+                }
+            }
             String path = splited[1];
 
-            if(path.startsWith("/user/create?")) {
-                int index = path.indexOf("?");
-                String queryString = path.substring(index+1);
-                Map<String, String> paramMap = HttpRequestUtils.parseQueryString(queryString);
-                User user = new User(paramMap.get("userId"), paramMap.get("password"), paramMap.get("name"), paramMap.get("email"));
+            if(path.startsWith("/user/create")) {
+                String body = util.IOUtils.readData(br, contentLength);
+                Map<String, String> params = HttpRequestUtils.parseQueryString(body);
+                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
                 log.debug("User: {}", user);
             }
-//            while (!"".equals(line)) {
-//                log.debug("header: {}", line);
 
-//                if(splited[1].equals("/index.html")) {
-//                    byte[] body = Files.readAllBytes(new File("./webapp" + "/index.html").toPath());
-//
-//                }
-//
-//                line = br.readLine(); //다음 줄 읽기, 없으면 무한루프에 빠진다.
-//            }
             DataOutputStream dos = new DataOutputStream(out);
             byte[] body = Files.readAllBytes(new File("./webapp", path).toPath());
             response200Header(dos, body.length);
@@ -54,6 +53,11 @@ public class RequestHandler extends Thread {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private int getContentLength(String line) {
+        String[] headerTockens = line.split(":");
+        return Integer.parseInt(headerTockens[1].trim());
     }
 
     private void response200Header(DataOutputStream dos, int lengthOfBodyContent) {
