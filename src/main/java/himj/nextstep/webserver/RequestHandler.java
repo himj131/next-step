@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.sql.DatabaseMetaData;
+import java.util.Collection;
 import java.util.Map;
 
 import himj.nextstep.db.DataBase;
@@ -32,11 +33,14 @@ public class RequestHandler extends Thread {
             String line = br.readLine();
             if(line == null) return;
             String[] splited = line.split(" ");
+            boolean logined = false;
             int contentLength = 0;
             while (!line.equals("")) {
                 log.debug("header : {}", line);
                 line = br.readLine();
-
+                if(line.contains("Cookie")) {
+                    logined = isLogin(line);
+                }
                 if(line.contains("Content-Length")) {
                     contentLength = getContentLength(line);
                 }
@@ -62,20 +66,51 @@ public class RequestHandler extends Thread {
                     response302LoginFailHeader(dos);
                 }
 
-            } else {
+            } else if("/user/list".equals(path)) {
+                if(!logined) {
+                    responseResource(out, "/user/login.html");
+                    return;
+                }
+
+                Collection<User> users = DataBase.findAll();
+                StringBuilder sb = new StringBuilder();
+                sb.append("<table>");
+                for(User user: users) {
+                    sb.append("<tr>");
+                    sb.append("<td>"+user.getUserId()+"</td>");
+                    sb.append("<td>"+user.getName()+"</td>");
+                    sb.append("<td>"+user.getEmail()+"</td>");
+                    sb.append("</tr>");
+                }
+                sb.append("</table>");
+                byte[] body = sb.toString().getBytes();
                 DataOutputStream dos = new DataOutputStream(out);
-                byte[] body = Files.readAllBytes(new File("./webapp", path).toPath());
                 response200Header(dos, body.length);
                 responseBody(dos, body);
+            } else {
+                responseResource(out, path);
             }
-
-
-
-
 
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private void responseResource(OutputStream out, String path) throws IOException {
+        DataOutputStream dos = new DataOutputStream(out);
+        byte[] body = Files.readAllBytes(new File("./webapp", path).toPath());
+        response200Header(dos, body.length);
+        responseBody(dos, body);
+    }
+
+    private boolean isLogin(String line) {
+        String[] headerTokens = line.split(":");
+        Map<String, String> cookies = HttpRequestUtils.parseCookies(headerTokens[1].trim());
+        String value = cookies.get("loginId");
+        if(value == null) {
+            return false;
+        }
+        return Boolean.parseBoolean(value);
     }
 
     private void response302LoginFailHeader(DataOutputStream dos) {
