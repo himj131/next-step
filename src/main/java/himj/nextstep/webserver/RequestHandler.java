@@ -25,46 +25,27 @@ public class RequestHandler extends Thread {
         log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(),
                 connection.getPort());
 
-        try (InputStream in = connection.getInputStream(); OutputStream out = connection.getOutputStream()) {
-            BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
-            String line = br.readLine();
-            if(line == null) return;
-            String[] splited = line.split(" ");
-            boolean logined = false;
-            int contentLength = 0;
-            while (!line.equals("")) {
-                log.debug("header : {}", line);
-                line = br.readLine();
-                if(line.contains("Cookie")) {
-                    logined = isLogin(line);
-                }
-                if(line.contains("Content-Length")) {
-                    contentLength = getContentLength(line);
-                }
-            }
-            String path = splited[1];
+        try (InputStream in = connection.getInputStream();
+             OutputStream out = connection.getOutputStream()) {
+            HttpRequest request = new HttpRequest(in);
+            String path = getDefaultPath(request.getPath());
+
             if("/user/create".equals(path)) {
-                String body = util.IOUtils.readData(br, contentLength);
-                Map<String, String> params = HttpRequestUtils.parseQueryString(body);
-                User user = new User(params.get("userId"), params.get("password"), params.get("name"), params.get("email"));
+                User user = new User(
+                        request.getParameter("userId"),
+                        request.getParameter("password"),
+                        request.getParameter("name"),
+                        request.getParameter("email")
+                );
+
                 log.debug("User: {}", user);
                 DataBase.addUser(user);
                 DataOutputStream dos = new DataOutputStream(out);
                 response302Header(dos, "/index.html");
             } else if("/user/login".equals(path)) {
-                String body = util.IOUtils.readData(br, contentLength);
-                Map<String, String> params = HttpRequestUtils.parseQueryString(body);
-                User user = DataBase.findUserById(params.get("userId"));
-                DataOutputStream dos = new DataOutputStream(out);
-                if(user != null && user.getPassword().equals(params.get("password"))) {
-                    response302LoginSuccessHeader(dos);
-                } else {
-
-                    response302LoginFailHeader(dos);
-                }
-
+                User user = DataBase.findUserById(request.getParameter("userId"));
             } else if("/user/list".equals(path)) {
-                if(!logined) {
+                if(!isLogin(request.getHeader("Cookie"))) {
                     responseResource(out, "/user/login.html");
                     return;
                 }
@@ -96,6 +77,13 @@ public class RequestHandler extends Thread {
         } catch (IOException e) {
             log.error(e.getMessage());
         }
+    }
+
+    private String getDefaultPath(String path) {
+        if(path.equals("/")) {
+            return "/index.html";
+        }
+        return path;
     }
 
     private void response200CssHeader(DataOutputStream dos, int length) {
