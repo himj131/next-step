@@ -16,6 +16,7 @@ public class HttpRequest {
     private String path;
     private Map<String ,String> headers = new HashMap<String, String>();
     private Map<String ,String> params = new HashMap<String, String>();
+    private RequestLine requestLine;
 
     private static final Logger log = LoggerFactory.getLogger(RequestHandler.class);
 
@@ -24,7 +25,8 @@ public class HttpRequest {
             BufferedReader br = new BufferedReader(new InputStreamReader(in, "UTF-8"));
             String line = br.readLine();
             if(line == null) return;
-            processRequestLine(line);
+
+            requestLine = new RequestLine(line);
 
             line = br.readLine();
             while(!line.equals("")) {
@@ -34,41 +36,24 @@ public class HttpRequest {
                 line = br.readLine();
             }
 
-            if("POST".equals(method)){
+            if(HttpMethod.POST.equals(requestLine.getMehtod())){
                 String body = util.IOUtils.readData(br,
                         Integer.parseInt(headers.get("Content-Length")));
                 params = HttpRequestUtils.parseQueryString(body);
+            } else {
+                params = requestLine.getParams();
             }
         }catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
-    private boolean processRequestLine(String requestLine) {
-        log.debug("request line : {}", requestLine);
-        String[] splited = requestLine.split(" ");
-        method = splited[0];
-        if("POST".equals(method)) {
-            path = splited[1];
-            return true;
-        }
-
-        int index = splited[1].indexOf("?");
-        if(index == -1) {
-            path = splited[1];
-        } else {
-            path = splited[1].substring(0, index);
-            params = HttpRequestUtils.parseQueryString(splited[1].substring(index+1));
-        }
-        return false;
-    }
-
-    public String getMethod() {
-        return method;
+    public HttpMethod getMethod() {
+        return requestLine.getMehtod();
     }
 
     public String getPath() {
-        return path;
+        return requestLine.getPath();
     }
 
     public String getHeader(String name) {
