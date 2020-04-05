@@ -42,7 +42,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="/user/list.jsp"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -66,10 +66,16 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
-                <li class="active"><a href="../index.html">Posts</a></li>
-                <li><a href="../user/login.html" role="button">로그인</a></li>
-                <li><a href="../user/form.html" role="button">회원가입</a></li>
-                <li><a href="#" role="button">로그아웃</a></li>
+                <li class="active"><a href="../index.jsp">Posts</a></li>
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <li><a href="/user/logout" role="button">로그아웃</a></li>
+                    </c:when>
+                    <c:otherwise>
+                        <li><a href="/user/login.jsp" role="button">로그인</a></li>
+                    </c:otherwise>
+                </c:choose>
+                <li><a href="/user/createForm.jsp" role="button">회원가입</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
         </div>
@@ -92,7 +98,7 @@
                         <th>${user.userId}</th>
                         <th>${user.name}</th>
                         <th>${user.email}</th>
-                        <th><a href="/user/form?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
+                        <th><a href="/user/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
                     </tr>
                 </c:forEach>
                 </tbody>
