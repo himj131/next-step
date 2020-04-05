@@ -1,3 +1,6 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -39,7 +42,7 @@
                         <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
                     </ul>
                 </li>
-                <li><a href="list.html"><i class="glyphicon glyphicon-user"></i></a></li>
+                <li><a href="../user/list.html"><i class="glyphicon glyphicon-user"></i></a></li>
             </ul>
         </div>
     </div>
@@ -53,13 +56,13 @@
                 <li class="nav-divider"></li>
                 <li><a href="#"><i class="glyphicon glyphicon-cog" style="color:#dd1111;"></i> Settings</a></li>
             </ul>
-            
+
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
-            	<span class="sr-only">Toggle navigation</span>
-            	<span class="icon-bar"></span>
-            	<span class="icon-bar"></span>
-            	<span class="icon-bar"></span>
-            </button>            
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse2">
             <ul class="nav navbar-nav navbar-right">
@@ -74,20 +77,26 @@
 </div>
 
 <div class="container" id="main">
-   <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-default content-main">
-          <form name="question" method="post" action="/user/login">
-              <div class="form-group">
-                  <label for="userId">사용자 아이디</label>
-                  <input class="form-control" id="userId" name="userId" placeholder="User ID">
-              </div>
-              <div class="form-group">
-                  <label for="password">비밀번호</label>
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-              </div>
-              <button type="submit" class="btn btn-success clearfix pull-right">로그인</button>
-              <div class="clearfix" />
-          </form>
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-default">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th> <th>사용자 아이디</th> <th>이름</th> <th>이메일</th><th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${users}" var="user" varStatus="status">
+                    <tr>
+                        <th scope="row">${status.count}</th>
+                        <th>${user.userId}</th>
+                        <th>${user.name}</th>
+                        <th>${user.email}</th>
+                        <th><a href="#" class="btn btn-success" role="button">수정</a></th>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -96,5 +105,6 @@
 <script src="../js/jquery-2.2.0.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/scripts.js"></script>
-	</body>
+</body>
 </html>
+
