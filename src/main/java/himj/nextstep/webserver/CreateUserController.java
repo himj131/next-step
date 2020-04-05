@@ -19,6 +19,6 @@ public class CreateUserController implements Controller {
 
         log.debug("User: {}", user);
         DataBase.addUser(user);
-        response.sendRedirect("/index.html");
+        response.sendRedirect("/index_.html");
     }
 }

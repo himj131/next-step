@@ -15,8 +15,14 @@ import java.io.IOException;
 public class ListUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        req.setAttribute("users", DataBase.findAll());
-        RequestDispatcher rd = req.getRequestDispatcher("/user/list.jsp");
-        rd.forward(req, resp);
+        HttpSession session = req.getSession();
+        Object user = session.getAttribute("user");
+        if(user != null) {
+            req.setAttribute("users", DataBase.findAll());
+            RequestDispatcher rd = req.getRequestDispatcher("/user/list.jsp");
+            rd.forward(req, resp);
+        } else {
+            throw new IllegalArgumentException("올바른 사용자가 아닙니다!");
+        }
     }
 }

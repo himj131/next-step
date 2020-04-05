@@ -7,6 +7,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/user/create")
@@ -19,6 +20,8 @@ public class CreateUserServlet extends HttpServlet {
                 req.getParameter("name"),
                 req.getParameter("email"));
         DataBase.addUser(user);
+        HttpSession session = req.getSession();
+        session.setAttribute("user", user);
         resp.sendRedirect("/user/list");
     }
 }

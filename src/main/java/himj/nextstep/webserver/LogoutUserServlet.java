@@ -13,6 +13,6 @@ public class LogoutUserServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
         session.invalidate();
-        resp.sendRedirect("/user/list");
+        resp.sendRedirect("/");
     }
 }

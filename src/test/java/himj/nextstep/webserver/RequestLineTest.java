@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class RequestLineTest {
     @Test
     void create_method() {
-        RequestLine line = new RequestLine("GET /index.html HTTP/1.1");
+        RequestLine line = new RequestLine("GET /index_.html HTTP/1.1");
         assertEquals(HttpMethod.GET, line.getMehtod());
-        assertEquals("/index.html", line.getPath());
+        assertEquals("/index_.html", line.getPath());
 
-        line = new RequestLine("POST /index.html HTTP/1.1");
-        assertEquals("/index.html", line.getPath());
+        line = new RequestLine("POST /index_.html HTTP/1.1");
+        assertEquals("/index_.html", line.getPath());
     }
 
     @Test

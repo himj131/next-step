@@ -14,7 +14,7 @@ public class LoginController implements Controller {
         if(user != null) {
             if(user.login(request.getParameter("password"))){
                 response.addHeader("Set_Cookie", "logined=true");
-                response.sendRedirect("/index.html");
+                response.sendRedirect("/index_.html");
             } else {
                 response.sendRedirect("/user/login_failed.html");
             }

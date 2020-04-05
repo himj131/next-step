@@ -12,14 +12,14 @@ class HttpResponseTest {
     @Test
     void responseForward() throws Exception {
         HttpResponse response = new HttpResponse(createOutputStream("Http_Forward.txt"));
-        response.forward("/index.html");
+        response.forward("/index_.html");
     }
 
     @Test
     void responseRedirect() throws Exception {
         HttpResponse response =
                 new HttpResponse(createOutputStream("Http_Redirect.txt"));
-        response.sendRedirect("/index.html");
+        response.sendRedirect("/index_.html");
     }
 
     @Test
@@ -27,7 +27,7 @@ class HttpResponseTest {
         HttpResponse response =
                 new HttpResponse(createOutputStream("Http_Cookie.txt"));
         response.addHeader("Set-Cookie", "logined=true");
-        response.sendRedirect("/index.html");
+        response.sendRedirect("/index_.html");
     }
 
     private OutputStream createOutputStream(String fileName) throws Exception {
