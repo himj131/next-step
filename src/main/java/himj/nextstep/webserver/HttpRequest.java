@@ -12,11 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class HttpRequest {
-    private String method;
-    private String path;
     private Map<String ,String> headers = new HashMap<String, String>();
     private Map<String ,String> params = new HashMap<String, String>();
     private RequestLine requestLine;
+
 
     private static final Logger log = LoggerFactory.getLogger(HttpRequest.class);
 
@@ -63,4 +62,13 @@ public class HttpRequest {
     public String getParameter(String name) {
         return params.get(name);
     }
+
+    public HttpCookie getCookies() {
+        return new HttpCookie(getHeader("Cookie"));
+    }
+
+    public HttpSession getSession() {
+        return HttpSessions.getSession(getCookies().getCookie("JSESSIONID"));
+    }
 }
+

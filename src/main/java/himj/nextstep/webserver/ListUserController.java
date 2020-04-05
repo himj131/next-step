@@ -14,7 +14,7 @@ public class ListUserController implements Controller {
             LoggerFactory.getLogger(ListUserController.class);
     @Override
     public void service(HttpRequest request, HttpResponse response) {
-        if(!isLogin(request.getHeader("Cookie"))) {
+        if(!isLogin(request.getSession())) {
             response.sendRedirect("/user/login.html");
             return;
         }
@@ -34,13 +34,9 @@ public class ListUserController implements Controller {
         response.forwardBody(sb.toString());
     }
 
-    private boolean isLogin(String line) {
-        String[] headerTokens = line.split(":");
-        Map<String, String> cookies = HttpRequestUtils.parseCookies(headerTokens[1].trim());
-        String value = cookies.get("loginId");
-        if(value == null) {
-            return false;
-        }
-        return Boolean.parseBoolean(value);
+    private boolean isLogin(HttpSession session) {
+        Object user = session.getAttribute("user");
+        if(user == null) return false;
+        return true;
     }
 }
