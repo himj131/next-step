@@ -1,10 +1,8 @@
-package himj.nextstep.webserver;
+package himj.nextstep.webserver.servlet;
 
 import himj.nextstep.db.DataBase;
 import himj.nextstep.model.User;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/user/update")
-public class UpdateUserServlet extends HttpServlet {
+//@WebServlet("/user/login")
+public class LoginUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = new User(
@@ -21,15 +19,14 @@ public class UpdateUserServlet extends HttpServlet {
                 req.getParameter("password"),
                 req.getParameter("name"),
                 req.getParameter("email"));
-        DataBase.addUser(user);
 
-        HttpSession session = req.getSession();
-        User loginedUser = (User) session.getAttribute("user");
-
-        if(loginedUser.getUserId() == user.getUserId()) {
+        User requestor = DataBase.findUserById(user.getUserId());
+        if(requestor != null) {
+            HttpSession session = req.getSession();
+            session.setAttribute("user", user);
             resp.sendRedirect("/user/list");
         } else {
-            throw new IllegalArgumentException("올바른 사용자가 아닙니다!");
+            throw new IllegalArgumentException("존재하지 않는 회원 입니다.");
         }
     }
 }

@@ -1,4 +1,4 @@
-package himj.nextstep.webserver;
+package himj.nextstep.webserver.servlet;
 
 import himj.nextstep.db.DataBase;
 
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/user/list")
+//@WebServlet("/user/list")
 public class ListUserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {

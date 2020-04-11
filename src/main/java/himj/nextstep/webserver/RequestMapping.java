@@ -1,19 +1,34 @@
 package himj.nextstep.webserver;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class RequestMapping {
-    private static Map<String, Controller> controllers
-            = new HashMap<String, Controller>();
+    private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
+    private static Map<String, Controller> mappings = new HashMap<String, Controller>();
+    void initMapping(){
+        mappings.put("/", new HomeController());
+        mappings.put("/users/form", new ForwardController("/user/createForm.jsp"));
+        mappings.put("/users/loginForm", new ForwardController("/user/login.jsp"));
+        mappings.put("/users", new ListUserController());
+        mappings.put("/users/login", new LoginController());
+        mappings.put("/users/profile", new ProfileController());
+        mappings.put("/users/logout", new LogoutController());
+        mappings.put("/users/create", new CreateUserController());
+        mappings.put("/users/updateForm", new UpdateFormUserController());
+        mappings.put("/users/update", new UpdateUserController());
 
-    static {
-        controllers.put("/user/create", new CreateUserController());
-        controllers.put("/user/login", new LoginController());
-        controllers.put("/user/list", new ListUserController());
+        logger.info("Initialized Request Mapping!");
     }
 
-    public static Controller getController(String requestUrl) {
-        return controllers.get(requestUrl);
+    public static Controller findController(String url) {
+        return mappings.get(url);
+    }
+
+    void put(String url, Controller controller) {
+        mappings.put(url, controller);
     }
 }

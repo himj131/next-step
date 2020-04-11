@@ -1,6 +1,5 @@
 package himj.nextstep.webserver;
 
-import himj.nextstep.util.HttpRequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.util.Map;
 import java.util.UUID;
 
 public class RequestHandler extends Thread {
@@ -33,13 +31,13 @@ public class RequestHandler extends Thread {
                 response.addHeader("Set-Cookie", "JSESSIONID=" + UUID.randomUUID());
             }
 
-            Controller controller = RequestMapping.getController(request.getPath());
+            Controller controller = RequestMapping.findController(request.getPath());
 
             if(controller == null) {
                 String path = getDefaultPath(request.getPath());
                 response.forward(path);
             } else {
-                controller.service(request, response);
+//                controller.service(request, response);
             }
         } catch (IOException e) {
             log.error(e.getMessage());

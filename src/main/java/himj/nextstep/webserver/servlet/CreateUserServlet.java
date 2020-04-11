@@ -1,4 +1,4 @@
-package himj.nextstep.webserver;
+package himj.nextstep.webserver.servlet;
 
 import himj.nextstep.db.DataBase;
 import himj.nextstep.model.User;
@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebServlet("/user/create")
 public class CreateUserServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {

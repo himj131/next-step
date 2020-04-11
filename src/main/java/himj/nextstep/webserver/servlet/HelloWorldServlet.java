@@ -1,4 +1,4 @@
-package himj.nextstep.webserver;
+package himj.nextstep.webserver.servlet;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;

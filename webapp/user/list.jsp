@@ -69,13 +69,13 @@
                 <li class="active"><a href="../index.jsp">Posts</a></li>
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
-                        <li><a href="/user/logout" role="button">로그아웃</a></li>
+                        <li><a href="/users/logout" role="button">로그아웃</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="/user/login.jsp" role="button">로그인</a></li>
+                        <li><a href="/users/loginForm" role="button">로그인</a></li>
                     </c:otherwise>
                 </c:choose>
-                <li><a href="/user/createForm.jsp" role="button">회원가입</a></li>
+                <li><a href="/users/form" role="button">회원가입</a></li>
                 <li><a href="#" role="button">개인정보수정</a></li>
             </ul>
         </div>
@@ -98,7 +98,7 @@
                         <th>${user.userId}</th>
                         <th>${user.name}</th>
                         <th>${user.email}</th>
-                        <th><a href="/user/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
+                        <th><a href="/users/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
                     </tr>
                 </c:forEach>
                 </tbody>

@@ -1,5 +1,6 @@
 package himj.nextstep.webserver;
 
+import himj.nextstep.model.User;
 import himj.nextstep.util.HttpRequestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -69,6 +71,10 @@ public class HttpRequest {
 
     public HttpSession getSession() {
         return HttpSessions.getSession(getCookies().getCookie("JSESSIONID"));
+    }
+
+    public void setAttribute(String users, Object obj) {
+
     }
 }
 
