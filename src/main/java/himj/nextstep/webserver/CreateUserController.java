@@ -36,6 +36,7 @@ public class CreateUserController implements Controller {
 
         log.debug("User: {}", user);
         DataBase.addUser(user);
-        return "redirect:/";
+
+        return "redirect:/users";
     }
 }
