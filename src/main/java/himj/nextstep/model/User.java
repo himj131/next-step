@@ -37,4 +37,8 @@ public class User {
     public boolean login(String password) {
         return this.password.equals(password);
     }
+
+    public void update(User user) {
+
+    }
 }
