@@ -1,13 +1,10 @@
 package himj.nextstep.infra;
 
-import himj.nextstep.config.ConnectionManager;
 import himj.nextstep.model.User;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao {
@@ -52,49 +49,29 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        List<User> users = new ArrayList<>();
-
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT * from USERS";
-            pstmt = con.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            User user = null;
-            if (rs.next()) {
-                user = new User(
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            protected Object mapRow(ResultSet rs) throws SQLException {
+                return new User(
                         rs.getString("userId"),
                         rs.getString("password"),
                         rs.getString("name"),
                         rs.getString("email")
                 );
-                users.add(user);
             }
-            return users;
 
-        } finally {
-            if(rs != null) {
-                rs.close();
+            @Override
+            protected void setParameters(PreparedStatement pstmt) {
             }
-            if(pstmt != null) {
-                pstmt.close();
-            }
-            if(con != null) {
-                con.close();
-            }
-        }
+        };
+        String sql = "SELECT * from USERS";
+        return (List<User>)jdbcTemplate.queryForList(sql);
     }
 
     public User findByUserId(String userId) throws SQLException {
         SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
             @Override
             protected User mapRow(ResultSet rs) throws SQLException {
-                if (!rs.next()) {
-                    return null;
-                }
                 return new User(
                         rs.getString("userId"),
                         rs.getString("password"),
@@ -108,7 +85,7 @@ public class UserDao {
                 pstmt.setString(1, userId);
             }
         };
-        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid = ?";
-        return (User)jdbcTemplate.executeQuery(sql);
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
+        return (User)jdbcTemplate.queryForObject(sql);
     }
 }

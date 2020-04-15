@@ -1,15 +1,16 @@
 package himj.nextstep.infra;
 
 import himj.nextstep.config.ConnectionManager;
-import himj.nextstep.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class SelectJdbcTemplate {
-    public Object executeQuery(String sql) throws SQLException {
+    public List queryForList(String sql) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -19,8 +20,11 @@ public abstract class SelectJdbcTemplate {
             setParameters(pstmt);
 
             rs = pstmt.executeQuery();
-
-            return mapRow(rs);
+            List<Object> results = new ArrayList<>();
+            while(rs.next()) {
+                results.add(mapRow(rs));
+            }
+            return results;
 
         } finally {
             if (rs != null) {
@@ -33,6 +37,14 @@ public abstract class SelectJdbcTemplate {
                 con.close();
             }
         }
+    }
+
+    public Object queryForObject(String sql) throws SQLException {
+        List results =  queryForList(sql);
+        if(results.isEmpty()) {
+            return null;
+        }
+        return results.get(0);
     }
 
     protected abstract Object mapRow(ResultSet rs) throws SQLException;
