@@ -22,7 +22,7 @@ public class UserDao {
             }
         };
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        jdbcTemplate.insert(sql);
+        jdbcTemplate.executeUpdate(sql);
     }
 
     public void update(User user) throws SQLException {
@@ -37,10 +37,10 @@ public class UserDao {
         };
 
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ? where userId = ?";
-        jdbcTemplate.insert(sql);
+        jdbcTemplate.executeUpdate(sql);
     }
 
-    public void removeUser(User user) throws SQLException {
+    public void delete(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             protected void setParameters(PreparedStatement pstmt) throws SQLException {
@@ -48,7 +48,7 @@ public class UserDao {
             }
         };
         String sql = "DELETE FROM USERS WHERE userid = ?";
-        jdbcTemplate.insert(sql);
+        jdbcTemplate.executeUpdate(sql);
     }
 
     public List<User> findAll() throws SQLException {
@@ -89,34 +89,26 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, userId);
-
-            rs = pstmt.executeQuery();
-
-            User user = null;
-            if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
+        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+            @Override
+            protected User mapRow(ResultSet rs) throws SQLException {
+                if (!rs.next()) {
+                    return null;
+                }
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
             }
 
-            return user;
-        } finally {
-            if (rs != null) {
-                rs.close();
+            @Override
+            protected void setParameters(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, userId);
             }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
+        };
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid = ?";
+        return (User)jdbcTemplate.executeQuery(sql);
     }
 }
