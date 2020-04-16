@@ -11,6 +11,11 @@ public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
+            protected Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
+            @Override
             protected void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
                 pstmt.setString(2, user.getPassword());
@@ -24,6 +29,11 @@ public class UserDao {
 
     public void update(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
+            @Override
+            protected Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
             @Override
             protected void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getPassword());
@@ -40,6 +50,11 @@ public class UserDao {
     public void delete(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
+            protected Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
+
+            @Override
             protected void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
             }
@@ -49,7 +64,7 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             protected Object mapRow(ResultSet rs) throws SQLException {
                 return new User(
@@ -69,7 +84,7 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             @Override
             protected User mapRow(ResultSet rs) throws SQLException {
                 return new User(
