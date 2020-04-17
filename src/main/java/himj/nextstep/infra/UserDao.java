@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class UserDao {
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         PreparedStatementSetter setter = pstmt -> {
             pstmt.setString(1, user.getUserId());
@@ -19,7 +19,7 @@ public class UserDao {
         jdbcTemplate.executeUpdate(sql, setter);
     }
 
-    public void update(User user) throws SQLException {
+    public void update(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         PreparedStatementSetter setter = pstmt -> {
             pstmt.setString(1, user.getPassword());
@@ -31,7 +31,7 @@ public class UserDao {
         jdbcTemplate.executeUpdate(sql, setter);
     }
 
-    public void delete(User user) throws SQLException {
+    public void delete(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         PreparedStatementSetter setter = pstmt -> pstmt.setString(1, user.getUserId());
         String sql = "DELETE FROM USERS WHERE userid = ?";
