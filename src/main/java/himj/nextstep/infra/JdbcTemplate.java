@@ -22,6 +22,21 @@ public class JdbcTemplate {
         }
     }
 
+    public void executeUpdate(PreparedStatementCreator psc, Keyholder holder) {
+        try (Connection conn = ConnectionManager.getConnection()) {
+            PreparedStatement ps = psc.createPreparedStatement(conn);
+            ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            if (rs.next()) {
+                holder.setId(rs.getLong(1));
+            }
+            rs.close();
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
+        }
+    }
+
 
     public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper,
                                     Object... parameters) throws SQLException {
