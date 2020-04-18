@@ -8,26 +8,14 @@ import java.util.List;
 public class UserDao {
     public void insert(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        PreparedStatementSetter setter = pstmt -> {
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
-        };
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        jdbcTemplate.executeUpdate(sql, setter);
+        jdbcTemplate.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void update(User user) {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        PreparedStatementSetter setter = pstmt -> {
-            pstmt.setString(1, user.getPassword());
-            pstmt.setString(2, user.getName());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getUserId());
-        };
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ? where userId = ?";
-        jdbcTemplate.executeUpdate(sql, setter);
+        jdbcTemplate.executeUpdate(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
     public void delete(User user) {
@@ -45,11 +33,8 @@ public class UserDao {
                 rs.getString("name"),
                 rs.getString("email")
         );
-
-        PreparedStatementSetter setter = pstmt -> {
-        };
         String sql = "SELECT * from USERS";
-        return jdbcTemplate.queryForList(sql, setter, rowMapper);
+        return jdbcTemplate.queryForList(sql, rowMapper);
     }
 
     public User findByUserId(String userId) throws SQLException {
@@ -60,9 +45,7 @@ public class UserDao {
                 rs.getString("name"),
                 rs.getString("email")
         );
-
-        PreparedStatementSetter setter = pstmt -> pstmt.setString(1, userId);
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
-        return jdbcTemplate.queryForObject(sql, setter, mapper);
+        return jdbcTemplate.queryForObject(sql, mapper, userId);
     }
 }
