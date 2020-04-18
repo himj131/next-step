@@ -2,7 +2,6 @@ package himj.nextstep.infra;
 
 import himj.nextstep.model.User;
 
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -40,27 +39,22 @@ public class UserDao {
 
     public List<User> findAll() throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        RowMapper rowMapper = new RowMapper() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                );
-            }
-        };
+        RowMapper<User> rowMapper = rs -> new User(
+                rs.getString("userId"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email")
+        );
 
         PreparedStatementSetter setter = pstmt -> {
         };
         String sql = "SELECT * from USERS";
-        return (List<User>)jdbcTemplate.queryForList(sql, setter, rowMapper);
+        return jdbcTemplate.queryForList(sql, setter, rowMapper);
     }
 
     public User findByUserId(String userId) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-        RowMapper mapper = rs -> new User(
+        RowMapper<User> mapper = rs -> new User(
                 rs.getString("userId"),
                 rs.getString("password"),
                 rs.getString("name"),
@@ -69,6 +63,6 @@ public class UserDao {
 
         PreparedStatementSetter setter = pstmt -> pstmt.setString(1, userId);
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userId = ?";
-        return (User)jdbcTemplate.queryForObject(sql, setter, mapper);
+        return jdbcTemplate.queryForObject(sql, setter, mapper);
     }
 }

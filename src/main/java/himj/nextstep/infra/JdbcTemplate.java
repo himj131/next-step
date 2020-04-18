@@ -21,16 +21,16 @@ public class JdbcTemplate {
     }
 
 
-    public List queryForList(String sql,
+    public <T> List<T> queryForList(String sql,
                              PreparedStatementSetter preparedStatementSetter,
-                             RowMapper rowMapper) throws SQLException {
+                             RowMapper<T> rowMapper) throws SQLException {
         ResultSet rs;
         try(Connection conn = ConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             preparedStatementSetter.setValues(pstmt);
 
             rs = pstmt.executeQuery();
-            List<Object> results = new ArrayList<>();
+            List<T> results = new ArrayList<>();
             while(rs.next()) {
                 results.add(rowMapper.mapRow(rs));
             }
@@ -38,10 +38,10 @@ public class JdbcTemplate {
         }
     }
 
-    public Object queryForObject(String sql,
+    public <T> T queryForObject(String sql,
                                  PreparedStatementSetter preparedStatementSetter,
-                                 RowMapper rowMapper) throws SQLException {
-        List results =  queryForList(sql, preparedStatementSetter, rowMapper);
+                                 RowMapper<T> rowMapper) throws SQLException {
+        List<T> results =  queryForList(sql, preparedStatementSetter, rowMapper);
         if(results.isEmpty()) {
             return null;
         }
