@@ -1,6 +1,6 @@
 package himj.nextstep.infra;
 
-public class Keyholder {
+public class KeyHolder {
     private long id;
 
     public void setId(long id) {

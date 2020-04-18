@@ -22,7 +22,7 @@ public class JdbcTemplate {
         }
     }
 
-    public void executeUpdate(PreparedStatementCreator psc, Keyholder holder) {
+    public void executeUpdate(PreparedStatementCreator psc, KeyHolder holder) {
         try (Connection conn = ConnectionManager.getConnection()) {
             PreparedStatement ps = psc.createPreparedStatement(conn);
             ps.executeUpdate();

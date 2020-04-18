@@ -2,23 +2,30 @@ package himj.nextstep.infra;
 
 import himj.nextstep.model.Answer;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class AnswerDao {
     public Answer insert(Answer answer) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
-        PreparedStatementCreator psc = con -> {
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, answer.getWriter());
-            pstmt.setString(2, answer.getContents());
-            pstmt.setTimestamp(3, new Timestamp(answer.getTimeFromCreateDate()));
-            pstmt.setLong(4, answer.getQuestionId());
-            return pstmt;
+        PreparedStatementCreator psc = new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement pstmt = con.prepareStatement(sql);
+                pstmt.setString(1, answer.getWriter());
+                pstmt.setString(2, answer.getContents());
+                pstmt.setTimestamp(3, new Timestamp(answer.getTimeFromCreateDate()));
+                pstmt.setLong(4, answer.getQuestionId());
+                return pstmt;
+            }
         };
 
-        Keyholder keyHolder = new Keyholder();
+        KeyHolder keyHolder = new KeyHolder();
         jdbcTemplate.executeUpdate(psc, keyHolder);
         return findById(keyHolder.getId());
     }
