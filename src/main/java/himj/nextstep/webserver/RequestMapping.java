@@ -1,6 +1,8 @@
 package himj.nextstep.webserver;
 
 import himj.nextstep.controller.*;
+import himj.nextstep.controller.qna.AddAnswerController;
+import himj.nextstep.controller.qna.ShowController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,16 +14,21 @@ public class RequestMapping {
     private static Map<String, Controller> mappings = new HashMap<String, Controller>();
     void initMapping(){
         mappings.put("/", new HomeController());
+
+        /** user */
         mappings.put("/users/form", new ForwardController("/user/createForm.jsp"));
         mappings.put("/users/loginForm", new ForwardController("/user/login.jsp"));
         mappings.put("/users", new ListUserController());
         mappings.put("/users/login", new LoginController());
-//        mappings.put("/users/profile", new ProfileController());
+        mappings.put("/users/profile", new ProfileController());
         mappings.put("/users/logout", new LogoutController());
         mappings.put("/users/create", new CreateUserController());
         mappings.put("/users/updateForm", new UpdateFormUserController());
         mappings.put("/users/update", new UpdateUserController());
 
+        /** qna */
+        mappings.put("/qna/show", new ShowController());
+        mappings.put("/api/qna/addAnswer", new AddAnswerController());
         logger.info("Initialized Request Mapping!");
     }
 
