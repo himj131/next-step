@@ -60,4 +60,12 @@ public class AnswerDao {
 
         return jdbcTemplate.queryForList(sql, rm, questionId);
     }
+
+    public long deleteAnswer(long answerId) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "DELETE FROM ANSWERS WHERE answerId = ? ";
+
+        jdbcTemplate.executeUpdate(sql, answerId);
+        return answerId;
+    }
 }

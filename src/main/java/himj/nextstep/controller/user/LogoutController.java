@@ -1,4 +1,6 @@
-package himj.nextstep.controller;
+package himj.nextstep.controller.user;
+
+import himj.nextstep.controller.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -1,12 +1,14 @@
-package himj.nextstep.controller;
+package himj.nextstep.controller.user;
+
+import himj.nextstep.controller.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ProfileController implements Controller {
+public class UpdateFormUserController implements Controller {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return null;
+        return "/user/updateForm.jsp";
     }
 }

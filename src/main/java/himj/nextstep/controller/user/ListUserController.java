@@ -1,5 +1,6 @@
-package himj.nextstep.controller;
+package himj.nextstep.controller.user;
 
+import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.UserDao;
 import himj.nextstep.webserver.UserSessionUtils;
 import org.slf4j.Logger;
