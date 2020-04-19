@@ -1,8 +1,14 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <!DOCTYPE html>
 <html lang="kr">
-<jsp:include page="header.jsp"></jsp:include>
+<head>
+    <%@ include file="/include/header.jspf" %>
+</head>
+<body>
+<%@ include file="/include/navigation.jspf" %>
 <div class="container" id="main">
    <div class="col-md-6 col-md-offset-3">
       <div class="panel panel-default content-main">
@@ -22,5 +28,6 @@
     </div>
 </div>
 
-	</body>
+<%@ include file="/include/footer.jspf" %>
+</body>
 </html>

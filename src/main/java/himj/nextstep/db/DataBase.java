@@ -7,7 +7,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import himj.nextstep.model.User;
 
-
+ // h2 로 대체
 public class DataBase {
     private static Map<String, User> users = Maps.newHashMap();
 

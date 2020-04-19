@@ -1,4 +1,4 @@
-package himj.nextstep.webserver;
+package himj.nextstep.controller;
 
 import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
@@ -23,6 +23,7 @@ public class CreateUserController implements Controller {
         UserDao userDao = new UserDao();
         userDao.insert(user);
         log.debug("User: {}", user);
+
 
         return "redirect:/users";
     }

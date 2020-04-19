@@ -38,8 +38,7 @@ public class JdbcTemplate {
     }
 
 
-    public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper,
-                                    Object... parameters) throws SQLException {
+    public <T> List<T> queryForList(String sql, RowMapper<T> rowMapper, Object... parameters) throws SQLException {
         ResultSet rs;
         try(Connection conn = ConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {

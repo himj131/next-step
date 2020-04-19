@@ -1,25 +1,19 @@
-package himj.nextstep.webserver;
+package himj.nextstep.controller;
 
-import himj.nextstep.db.DataBase;
-import himj.nextstep.model.User;
-import himj.nextstep.util.HttpRequestUtils;
+import himj.nextstep.infra.UserDao;
+import himj.nextstep.webserver.UserSessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Map;
+import java.sql.SQLException;
 
 //@WebServlet("/users")
 public class ListUserController implements Controller {
     private static final Logger log =
             LoggerFactory.getLogger(ListUserController.class);
+    UserDao userDao = new UserDao();
 //    @Override
 //    public vgoid service(HttpRequest request, HttpResponse response) {
 //        if(!isLogin(request.getSession())) {
@@ -43,12 +37,12 @@ public class ListUserController implements Controller {
 //    }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         if (!UserSessionUtils.isLogined(request.getSession())) {
             return "redirect:/users/loginForm";
         }
 
-        request.setAttribute("users", DataBase.findAll());
+        request.setAttribute("users", userDao.findAll());
         return "/user/list.jsp";
     }
 }

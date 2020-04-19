@@ -1,6 +1,6 @@
-package himj.nextstep.webserver;
+package himj.nextstep.controller;
 
-import himj.nextstep.db.DataBase;
+import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,23 +8,25 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.SQLException;
 
 public class LoginController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+    UserDao userDao = new UserDao();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        User user = DataBase.findUserById(request.getParameter("userId"));
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+        User user = userDao.findByUserId(request.getParameter("userId"));
         if(user != null) {
             if(user.login(request.getParameter("password"))){
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 return "redirect:/users";
             } else {
-                return "/user/login_failed.html";
+                return "/user/login_failed.jsp";
             }
         } else {
-            return "/user/login_failed.html";
+            return "/user/login_failed.jsp";
         }
     }
 }

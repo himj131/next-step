@@ -1,6 +1,6 @@
-package himj.nextstep.webserver;
+package himj.nextstep.controller;
 
-import himj.nextstep.db.DataBase;
+import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 public class UpdateUserController implements Controller {
-
+    UserDao userDao = new UserDao();
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         User user = new User(
@@ -16,7 +16,7 @@ public class UpdateUserController implements Controller {
                 req.getParameter("password"),
                 req.getParameter("name"),
                 req.getParameter("email"));
-        DataBase.addUser(user);
+        userDao.update(user);
 
         HttpSession session = req.getSession();
         User loginedUser = (User) session.getAttribute("user");

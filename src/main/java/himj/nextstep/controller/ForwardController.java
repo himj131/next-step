@@ -1,4 +1,4 @@
-package himj.nextstep.webserver;
+package himj.nextstep.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
