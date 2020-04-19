@@ -27,7 +27,9 @@ function addAnswer(e) {
 
   }
 
-  function onSuccess() {
-
+  function onSuccess(json, status) {
+    const answerTemplate = $("#answerTemplate").html();
+    const template = answerTemplate.format(json.writer, new Date(json.createdDate), json.contents, json.answerId);
+    $(".qna-comment-slipp-articles").prepend(template);
   }
 }
