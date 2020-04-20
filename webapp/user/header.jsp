@@ -75,7 +75,7 @@
                     <li><a href="/users/form" role="button">회원가입</a></li>
                 </c:if>
                 <c:if test="${not empty sessionScope.user}">
-                    <li><a href="/users/updateForm" role="button">개인정보수정</a></li>
+                    <li><a href="/users/updateForm?userId=${sessionScope.user.userId}" role="button">개인정보수정</a></li>
                 </c:if>
             </ul>
         </div>
