@@ -3,13 +3,15 @@ package himj.nextstep.controller.qna;
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.AnswerDao;
 import himj.nextstep.infra.QuestionDao;
+import himj.nextstep.mvc.JspView;
+import himj.nextstep.mvc.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class ShowController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long questionId = Long.valueOf(request.getParameter("questionId"));
         QuestionDao questionDao = new QuestionDao();
         AnswerDao answerDao = new AnswerDao();
@@ -17,6 +19,6 @@ public class ShowController implements Controller {
         request.setAttribute("question", questionDao.findById(questionId));
         request.setAttribute("answer", answerDao.findAllByQuestionId(questionId));
 
-        return "/qna/show.jsp";
+        return new JspView("/qna/show.jsp");
     }
 }

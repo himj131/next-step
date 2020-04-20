@@ -1,6 +1,7 @@
 package himj.nextstep.webserver;
 
 import himj.nextstep.controller.Controller;
+import himj.nextstep.mvc.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,35 +21,43 @@ public class DispatcherServlet extends HttpServlet {
     private RequestMapping rm;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
         rm = new RequestMapping();
         rm.initMapping();
     }
 
     @Override
-    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
+    protected void service(HttpServletRequest req, HttpServletResponse resp) {
         String requestUri = req.getRequestURI();
         logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
 
         Controller controller = rm.findController(requestUri);
+        View view;
         try {
-            String viewName = controller.execute(req, resp);
-            if(viewName != null) {
-                move(viewName, req, resp);
-            }
-        } catch (Throwable e) {
-            logger.error("Exception : {}", e);
-            throw new ServletException(e.getMessage());
-        }
-    }
-
-    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-        if(viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
-            resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
-            return;
+            view = controller.execute(req, resp);
+            view.render(req, resp);
+        } catch (Exception e) {
+            logger.error("Exception: {}", e);
         }
 
-        RequestDispatcher rd = req.getRequestDispatcher(viewName);
-        rd.forward(req, resp);
+//        try {
+//            String viewName = controller.execute(req, resp);
+//            if(viewName != null) {
+//                move(viewName, req, resp);
+//            }
+//        } catch (Throwable e) {
+//            logger.error("Exception : {}", e);
+//            throw new ServletException(e.getMessage());
+//        }
     }
+
+//    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+//        if(viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
+//            resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
+//            return;
+//        }
+//
+//        RequestDispatcher rd = req.getRequestDispatcher(viewName);
+//        rd.forward(req, resp);
+//    }
 }

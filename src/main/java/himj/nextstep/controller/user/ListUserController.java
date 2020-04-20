@@ -2,6 +2,8 @@ package himj.nextstep.controller.user;
 
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.UserDao;
+import himj.nextstep.mvc.JspView;
+import himj.nextstep.mvc.View;
 import himj.nextstep.webserver.UserSessionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +40,12 @@ public class ListUserController implements Controller {
 //    }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         if (!UserSessionUtils.isLogined(request.getSession())) {
-            return "redirect:/users/loginForm";
+            return new JspView("redirect:/users/loginForm");
         }
 
         request.setAttribute("users", userDao.findAll());
-        return "/user/list.jsp";
+        return new JspView("/user/list.jsp");
     }
 }

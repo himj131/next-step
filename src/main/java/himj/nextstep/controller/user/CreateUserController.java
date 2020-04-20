@@ -3,6 +3,8 @@ package himj.nextstep.controller.user;
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
+import himj.nextstep.mvc.JspView;
+import himj.nextstep.mvc.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +15,7 @@ public class CreateUserController implements Controller {
     private static final Logger log =
             LoggerFactory.getLogger(CreateUserController.class);
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public View execute(HttpServletRequest request, HttpServletResponse response) {
         User user = new User(
                 request.getParameter("userId"),
                 request.getParameter("password"),
@@ -26,6 +28,6 @@ public class CreateUserController implements Controller {
         log.debug("User: {}", user);
 
 
-        return "redirect:/users";
+        return new JspView("redirect:/users");
     }
 }

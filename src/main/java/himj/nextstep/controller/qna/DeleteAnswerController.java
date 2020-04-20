@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.AnswerDao;
 import himj.nextstep.model.Result;
+import himj.nextstep.mvc.JsonView;
+import himj.nextstep.mvc.View;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +14,7 @@ import java.io.PrintWriter;
 
 public class DeleteAnswerController implements Controller {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public View execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AnswerDao answerDao = new AnswerDao();
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json;charset=UTF-8");
@@ -23,6 +25,6 @@ public class DeleteAnswerController implements Controller {
         } catch (Exception e){
             out.print(mapper.writeValueAsString( Result.fail("fail")));
         }
-        return null;
+        return new JsonView();
     }
 }
