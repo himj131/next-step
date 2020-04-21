@@ -27,11 +27,7 @@ public class AddAnswerController implements Controller {
 
         AnswerDao answerDao = new AnswerDao();
         Answer savedAnswer = answerDao.insert(answer);
-
-        ObjectMapper mapper = new ObjectMapper();
-        response.setContentType("application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        out.print(mapper.writeValueAsString(savedAnswer));
+        request.setAttribute("answer", savedAnswer);
         return new JsonView();
     }
 }
