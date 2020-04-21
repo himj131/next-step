@@ -1,11 +1,21 @@
 package himj.nextstep.controller;
 
-import himj.nextstep.mvc.View;
+import himj.nextstep.mvc.JsonView;
+import himj.nextstep.mvc.JspView;
+import himj.nextstep.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public interface Controller {
 //    void service(HttpRequest request, HttpResponse response);
-    View execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
+    ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception;
+
+    default ModelAndView jspView(String forwardUrl) {
+        return new ModelAndView(new JspView(forwardUrl));
+    }
+
+    default ModelAndView jsonView() {
+        return new ModelAndView(new JsonView());
+    }
 }

@@ -1,7 +1,6 @@
 package himj.nextstep.controller;
 
-import himj.nextstep.mvc.JspView;
-import himj.nextstep.mvc.View;
+import himj.nextstep.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HomeController implements Controller {
 
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        return new JspView("redirect:index.jsp");
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+        return jspView("redirect:index.jsp");
     }
 }

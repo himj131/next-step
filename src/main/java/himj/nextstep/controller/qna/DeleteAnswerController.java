@@ -3,8 +3,7 @@ package himj.nextstep.controller.qna;
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.AnswerDao;
 import himj.nextstep.model.Result;
-import himj.nextstep.mvc.JsonView;
-import himj.nextstep.mvc.View;
+import himj.nextstep.mvc.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +11,7 @@ import java.io.IOException;
 
 public class DeleteAnswerController implements Controller {
     @Override
-    public View execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         AnswerDao answerDao = new AnswerDao();
         Result result;
         try {
@@ -21,13 +20,9 @@ public class DeleteAnswerController implements Controller {
         } catch (Exception e){
             result = Result.fail("fail");
         }
-        setAttribute(request, result);
 
-        return new JsonView();
-    }
-
-    private void setAttribute(HttpServletRequest request, Result result) {
-        request.setAttribute("status", result.isStatus());
-        request.setAttribute("message", result.getMessage());
+        return jsonView()
+                .addObject("status", result.isStatus())
+                .addObject("message", result.getMessage());
     }
 }

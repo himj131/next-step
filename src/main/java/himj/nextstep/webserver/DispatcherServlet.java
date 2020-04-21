@@ -1,6 +1,7 @@
 package himj.nextstep.webserver;
 
 import himj.nextstep.controller.Controller;
+import himj.nextstep.mvc.ModelAndView;
 import himj.nextstep.mvc.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,10 @@ public class DispatcherServlet extends HttpServlet {
         logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
 
         Controller controller = rm.findController(requestUri);
-        View view;
         try {
-            view = controller.execute(req, resp);
-            view.render(req, resp);
+            ModelAndView modelAndView = controller.execute(req, resp);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(), req, resp);
         } catch (Exception e) {
             logger.error("Exception: {}", e);
         }

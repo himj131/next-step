@@ -4,6 +4,7 @@ import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
 import himj.nextstep.mvc.JspView;
+import himj.nextstep.mvc.ModelAndView;
 import himj.nextstep.mvc.View;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpSession;
 public class UpdateUserController implements Controller {
     UserDao userDao = new UserDao();
     @Override
-    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         User user = new User(
                 req.getParameter("userId"),
                 req.getParameter("password"),
@@ -25,7 +26,7 @@ public class UpdateUserController implements Controller {
         User loginedUser = (User) session.getAttribute("user");
 
         if(loginedUser.getUserId().equals(user.getUserId())) {
-            return new JspView("redirect:/users");
+            return jspView("redirect:/users");
         } else {
             throw new IllegalArgumentException("올바른 사용자가 아닙니다!");
         }
