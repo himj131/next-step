@@ -22,7 +22,7 @@ public class LoginController implements Controller {
             if(user.login(request.getParameter("password"))){
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
-                return jspView("redirect:/users");
+                return jspView("redirect:/");
             } else {
                 return jspView("/user/login_failed.jsp");
             }
