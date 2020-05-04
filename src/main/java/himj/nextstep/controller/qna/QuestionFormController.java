@@ -21,6 +21,7 @@ public class QuestionFormController implements Controller {
 
         if(user == null) return jspView("redirect:/users/loginForm");
 
-        return jspView("/qna/form.jsp");
+        return jspView("/qna/form.jsp")
+                .addObject("user", user);
     }
 }
