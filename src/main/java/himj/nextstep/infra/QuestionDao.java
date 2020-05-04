@@ -2,7 +2,10 @@ package himj.nextstep.infra;
 
 import himj.nextstep.model.Question;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class QuestionDao {
@@ -25,5 +28,24 @@ public class QuestionDao {
                 rs.getString("contents"), rs.getTimestamp("createdDate"), rs.getInt("countOfAnswer"));
 
         return jdbcTemplate.queryForObject(sql, rm, questionId);
+    }
+
+    public Question insert(Question question) throws SQLException {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "INSERT INTO QUESTIONS (writer, title, contents," +
+                "createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatementCreator psc = con -> {
+            PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            pstmt.setString(1, question.getWriter());
+            pstmt.setString(2, question.getTitle());
+            pstmt.setString(3, question.getContents());
+            pstmt.setTimestamp(4, new Timestamp(question.getTimeFromCreateDate()));
+            pstmt.setInt(5, 0);
+            return pstmt;
+        };
+
+        KeyHolder keyHolder = new KeyHolder();
+        jdbcTemplate.executeUpdate(psc, keyHolder);
+        return findById(keyHolder.getId());
     }
 }

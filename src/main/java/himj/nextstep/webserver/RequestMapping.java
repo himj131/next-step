@@ -1,9 +1,7 @@
 package himj.nextstep.webserver;
 
 import himj.nextstep.controller.*;
-import himj.nextstep.controller.qna.AddAnswerController;
-import himj.nextstep.controller.qna.DeleteAnswerController;
-import himj.nextstep.controller.qna.ShowController;
+import himj.nextstep.controller.qna.*;
 import himj.nextstep.controller.user.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +28,8 @@ public class RequestMapping {
 
         /** qna */
         mappings.put("/qna/show", new ShowController());
+        mappings.put("/qna/form", new QuestionFormController());
+        mappings.put("/api/qna/addQuestion", new AddQuestionController());
         mappings.put("/api/qna/addAnswer", new AddAnswerController());
         mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
         logger.info("Initialized Request Mapping!");
