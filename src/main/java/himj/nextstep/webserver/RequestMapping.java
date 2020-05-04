@@ -29,6 +29,7 @@ public class RequestMapping {
         /** qna */
         mappings.put("/qna/show", new ShowController());
         mappings.put("/qna/form", new QuestionFormController());
+        mappings.put("/api/qna/questions", new QuestionListController());
         mappings.put("/api/qna/addQuestion", new AddQuestionController());
         mappings.put("/api/qna/addAnswer", new AddAnswerController());
         mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
