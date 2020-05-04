@@ -6,8 +6,9 @@ import java.sql.*;
 import java.util.List;
 
 public class AnswerDao {
+    JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public Answer insert(Answer answer) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";
         PreparedStatementCreator psc = con -> {
             PreparedStatement pstmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -24,7 +25,6 @@ public class AnswerDao {
     }
 
     public Answer findById(long answerId) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate, questionId FROM ANSWERS WHERE answerId = ?";
 
         RowMapper<Answer> rm = new RowMapper<Answer>() {
@@ -43,7 +43,6 @@ public class AnswerDao {
     }
 
     public List<Answer> findAllByQuestionId(long questionId) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT answerId, writer, contents, createdDate FROM ANSWERS WHERE questionId = ? "
                 + "order by answerId desc";
 
@@ -62,7 +61,6 @@ public class AnswerDao {
     }
 
     public long deleteAnswer(long answerId) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "DELETE FROM ANSWERS WHERE answerId = ? ";
 
         jdbcTemplate.executeUpdate(sql, answerId);

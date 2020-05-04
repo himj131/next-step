@@ -9,8 +9,9 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class QuestionDao {
+    JdbcTemplate jdbcTemplate = new JdbcTemplate();
+
     public List<Question> findAll() throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT questionId, writer, title, createdDate, countOfAnswer FROM QUESTIONS "
                 + "order by questionId desc";
 
@@ -20,7 +21,6 @@ public class QuestionDao {
     }
 
     public Question findById(long questionId) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "SELECT questionId, writer, title, contents, createdDate, countOfAnswer FROM QUESTIONS "
                 + "WHERE questionId = ?";
 
@@ -31,7 +31,6 @@ public class QuestionDao {
     }
 
     public Question insert(Question question) throws SQLException {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "INSERT INTO QUESTIONS (writer, title, contents," +
                 "createdDate, countOfAnswer) VALUES (?, ?, ?, ?, ?)";
         PreparedStatementCreator psc = con -> {
@@ -50,7 +49,6 @@ public class QuestionDao {
     }
 
     public void updateAnswerCount(Question question) {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
         String sql = "UPDATE QUESTIONS set countOfAnswer = ? where questionId = ?";
         jdbcTemplate.executeUpdate(sql, question.getCountOfComment() + 1, question.getQuestionId());
     }
