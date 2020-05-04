@@ -48,4 +48,10 @@ public class QuestionDao {
         jdbcTemplate.executeUpdate(psc, keyHolder);
         return findById(keyHolder.getId());
     }
+
+    public void updateAnswerCount(Question question) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate();
+        String sql = "UPDATE QUESTIONS set countOfAnswer = ? where questionId = ?";
+        jdbcTemplate.executeUpdate(sql, question.getCountOfComment() + 1, question.getQuestionId());
+    }
 }

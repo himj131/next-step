@@ -2,7 +2,9 @@ package himj.nextstep.controller.qna;
 
 import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.AnswerDao;
+import himj.nextstep.infra.QuestionDao;
 import himj.nextstep.model.Answer;
+import himj.nextstep.model.Question;
 import himj.nextstep.mvc.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,10 @@ public class AddAnswerController implements Controller {
 
         AnswerDao answerDao = new AnswerDao();
         Answer savedAnswer = answerDao.insert(answer);
+
+        QuestionDao questionDao = new QuestionDao();
+        Question question = questionDao.findById(Long.parseLong(request.getParameter("questionId")));
+        questionDao.updateAnswerCount(question);
 
         return jsonView()
                 .addObject("answer", savedAnswer);
