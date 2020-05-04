@@ -16,7 +16,7 @@ public class AddQuestionController implements Controller {
     private static final Logger log = LoggerFactory.getLogger(AddQuestionController.class);
 
     @Override
-    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Question question = new Question(
                 request.getParameter("writer"),
                 request.getParameter("title"),
@@ -25,6 +25,7 @@ public class AddQuestionController implements Controller {
         log.debug("question : {}", question);
 
         QuestionDao questionDao = new QuestionDao();
+        questionDao.insert(question);
 
         return jspView("redirect:/");
     }
