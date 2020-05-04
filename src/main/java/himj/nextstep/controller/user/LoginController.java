@@ -4,8 +4,6 @@ import himj.nextstep.controller.Controller;
 import himj.nextstep.infra.UserDao;
 import himj.nextstep.model.User;
 import himj.nextstep.mvc.ModelAndView;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

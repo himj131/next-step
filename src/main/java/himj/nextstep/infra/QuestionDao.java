@@ -52,4 +52,13 @@ public class QuestionDao {
         String sql = "UPDATE QUESTIONS set countOfAnswer = ? where questionId = ?";
         jdbcTemplate.executeUpdate(sql, question.getCountOfComment() + 1, question.getQuestionId());
     }
+
+    public void update(long questionId, Question question) {
+        String sql = "UPDATE QUESTIONS set writer = ?, title = ?, contents = ? where questionId = ?";
+        jdbcTemplate.executeUpdate(sql,
+                                        question.getWriter(),
+                                        question.getTitle(),
+                                        question.getContents(),
+                                        questionId);
+    }
 }

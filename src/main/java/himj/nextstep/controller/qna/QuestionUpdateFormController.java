@@ -28,6 +28,6 @@ public class QuestionUpdateFormController implements Controller {
             return jspView("redirect:/users/loginForm");
         }
         return jspView("/qna/updateForm.jsp")
-                .addObject("questoin", question);
+                .addObject("question", question);
     }
 }
