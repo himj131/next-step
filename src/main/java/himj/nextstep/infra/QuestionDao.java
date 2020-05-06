@@ -61,4 +61,9 @@ public class QuestionDao {
                                         question.getContents(),
                                         questionId);
     }
+
+    public void deleteById(long questionId) {
+        String sql = "DELETE QUESTIONS where questionId = ?";
+        jdbcTemplate.executeUpdate(sql, questionId);
+    }
 }
