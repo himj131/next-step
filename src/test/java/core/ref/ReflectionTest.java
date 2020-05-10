@@ -50,8 +50,19 @@ public class ReflectionTest {
     }
     
     @Test
-    public void privateFieldAccess() {
+    public void privateFieldAccess() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchFieldException {
         Class<Student> clazz = Student.class;
-        logger.debug(clazz.getName());
+        Constructor<Student> constructor = clazz.getConstructor();
+
+        Student student = constructor.newInstance();
+        Field nameField = clazz.getDeclaredField("name");
+        nameField.setAccessible(true);
+        nameField.set(student, "name");
+
+        Field ageField = clazz.getDeclaredField("age");
+        ageField.setAccessible(true);
+        ageField.setInt(student, 33);
+
+        logger.debug("student : {}", student);
     }
 }
