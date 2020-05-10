@@ -9,8 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 public class ReflectionTest {
     private static final Logger logger = LoggerFactory.getLogger(ReflectionTest.class);
@@ -38,9 +38,15 @@ public class ReflectionTest {
     }
     
     @Test
-    public void newInstanceWithConstructorArgs() {
+    public void newInstanceWithConstructorArgs() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Class<User> clazz = User.class;
         logger.debug(clazz.getName());
+
+        Class[] params = {String.class, String.class, String.class, String.class};
+        Constructor<User> constructor =clazz.getConstructor(params);
+        User user = constructor.newInstance("id", "pwd", "name", "email");
+
+        logger.debug("user : {}", user);
     }
     
     @Test
