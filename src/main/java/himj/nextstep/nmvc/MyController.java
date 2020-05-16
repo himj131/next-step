@@ -24,4 +24,16 @@ public class MyController {
         logger.debug("save");
         return new ModelAndView(new JspView("redirect:/users"));
     }
+
+    @RequestMapping(value="/users", method= RequestMethod.GET)
+    public ModelAndView users(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("users");
+        return new ModelAndView(new JspView("/users/list.jsp"));
+    }
+
+    @RequestMapping(value="/users/show", method= RequestMethod.GET)
+    public ModelAndView showUsers(HttpServletRequest request, HttpServletResponse response) {
+        logger.debug("showUsers");
+        return new ModelAndView(new JspView("/users/show.jsp"));
+    }
 }
