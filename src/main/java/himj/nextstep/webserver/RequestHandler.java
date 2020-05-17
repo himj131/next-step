@@ -32,7 +32,7 @@ public class RequestHandler extends Thread {
                 response.addHeader("Set-Cookie", "JSESSIONID=" + UUID.randomUUID());
             }
 
-            Controller controller = RequestMapping.findController(request.getPath());
+            Controller controller = LegacyHandlerMapping.findController(request.getPath());
 
             if(controller == null) {
                 String path = getDefaultPath(request.getPath());

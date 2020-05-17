@@ -1,64 +1,69 @@
 package himj.nextstep.webserver;
 
+import com.google.common.collect.Lists;
 import himj.nextstep.controller.Controller;
 import himj.nextstep.mvc.ModelAndView;
 import himj.nextstep.mvc.View;
+import himj.nextstep.nmvc.AnnotationHandlerMapping;
+import himj.nextstep.nmvc.HandlerExecution;
+import himj.nextstep.nmvc.HandlerMapping;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.util.List;
 
 @WebServlet(name ="dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
-    private static final String DEFAULT_REDIRECT_PREFIX = "redirect:";
-    private RequestMapping rm;
+    private List<HandlerMapping> mappings = Lists.newArrayList();
 
     @Override
     public void init() {
-        rm = new RequestMapping();
-        rm.initMapping();
+        LegacyHandlerMapping lhm = new LegacyHandlerMapping();
+        lhm.initMapping();
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("himj.nextstep");
+        ahm.initialize();
+
+        mappings.add(lhm);
+        mappings.add(ahm);
     }
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) {
-        String requestUri = req.getRequestURI();
-        logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
+        Object handler = getHandler(req);
+        if(handler == null) {
+            throw new IllegalArgumentException("존재하지 않는 url입니다.");
+        }
 
-        Controller controller = rm.findController(requestUri);
         try {
-            ModelAndView modelAndView = controller.execute(req, resp);
+            ModelAndView modelAndView = execute(handler, req, resp);
             View view = modelAndView.getView();
             view.render(modelAndView.getModel(), req, resp);
         } catch (Exception e) {
             logger.error("Exception: {}", e);
         }
-
-//        try {
-//            String viewName = controller.execute(req, resp);
-//            if(viewName != null) {
-//                move(viewName, req, resp);
-//            }
-//        } catch (Throwable e) {
-//            logger.error("Exception : {}", e);
-//            throw new ServletException(e.getMessage());
-//        }
     }
 
-//    private void move(String viewName, HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
-//        if(viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
-//            resp.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
-//            return;
-//        }
-//
-//        RequestDispatcher rd = req.getRequestDispatcher(viewName);
-//        rd.forward(req, resp);
-//    }
+    private ModelAndView execute(Object handler, HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        if(handler instanceof Controller) {
+            return ((Controller) handler).execute(req, resp);
+        } else {
+            return ((HandlerExecution)handler).handle(req, resp);
+        }
+    }
+
+    private Object getHandler(HttpServletRequest req) {
+        for (HandlerMapping handlerMapping : mappings) {
+            Object handler = handlerMapping.getHandler(req);
+            if (handler != null) {
+                return handler;
+            }
+        }
+        return null;
+    }
 }

@@ -29,6 +29,14 @@ public class User {
         return email;
     }
 
+    public boolean isSameUser(User user) {
+        return isSameUser(user.getUserId());
+    }
+
+    public boolean isSameUser(String newUserId) {
+        return userId.equals(newUserId);
+    }
+
     @Override
     public String toString() {
         return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
@@ -69,5 +77,13 @@ public class User {
         } else if (!userId.equals(other.userId))
             return false;
         return true;
+    }
+
+    public boolean matchPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+
+        return this.password.equals(password);
     }
 }
