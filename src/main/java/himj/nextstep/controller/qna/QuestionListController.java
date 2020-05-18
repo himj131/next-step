@@ -18,7 +18,7 @@ public class QuestionListController implements Controller {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         List<Question> questions = questionDao.findAll();
         return jsonView()
                 .addObject("questoins", questions);

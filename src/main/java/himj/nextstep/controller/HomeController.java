@@ -13,7 +13,7 @@ public class HomeController implements Controller {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         List<Question> questions = questionDao.findAll();
 
         return jspView("home.jsp")

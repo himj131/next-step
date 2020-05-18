@@ -11,14 +11,14 @@ import java.util.List;
 
 public class DeleteQuestionService {
     public void deleteQuestion(HttpServletRequest request) throws Exception {
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         long questionId = Long.parseLong(request.getParameter("questionId"));
         Question question = questionDao.findById(questionId);
         User user = (User) request.getSession().getAttribute("user");
 
         if(!question.getWriter().equals(user.getName())) throw new RuntimeException();
         if(question.getCountOfComment() > 0) {
-            AnswerDao answerDao = new AnswerDao();
+            AnswerDao answerDao = AnswerDao.getInstance();
             List<Answer> answers = answerDao.findAllByQuestionId(questionId);
             for(int i = 0; i < answers.size(); i ++) {
                 if(!answers.get(i).getWriter().equals(question.getWriter())) throw new Exception();

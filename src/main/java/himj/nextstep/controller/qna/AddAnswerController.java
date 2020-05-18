@@ -24,10 +24,10 @@ public class AddAnswerController implements Controller {
         );
         log.debug("answer : {}", answer);
 
-        AnswerDao answerDao = new AnswerDao();
+        AnswerDao answerDao = AnswerDao.getInstance();
         Answer savedAnswer = answerDao.insert(answer);
 
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         Question question = questionDao.findById(Long.parseLong(request.getParameter("questionId")));
         questionDao.updateAnswerCount(question);
 

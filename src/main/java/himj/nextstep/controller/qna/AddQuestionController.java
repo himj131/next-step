@@ -26,7 +26,7 @@ public class AddQuestionController implements Controller {
         );
         log.debug("question : {}", question);
 
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         questionDao.insert(question);
 
         return jspView("redirect:/");

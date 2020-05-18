@@ -9,7 +9,18 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class QuestionDao {
-    JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static QuestionDao questionDao;
+    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    private QuestionDao() {
+    }
+
+    public static QuestionDao getInstance() {
+        if (questionDao == null) {
+            questionDao = new QuestionDao();
+        }
+        return questionDao;
+    }
 
     public List<Question> findAll() throws SQLException {
         String sql = "SELECT questionId, writer, title, createdDate, countOfAnswer FROM QUESTIONS "
@@ -64,6 +75,11 @@ public class QuestionDao {
 
     public void deleteById(long questionId) {
         String sql = "DELETE QUESTIONS where questionId = ?";
+        jdbcTemplate.executeUpdate(sql, questionId);
+    }
+
+    public void delete(long questionId) {
+        String sql = "DELETE FROM QUESTIONS WHERE questionId = ?";
         jdbcTemplate.executeUpdate(sql, questionId);
     }
 }

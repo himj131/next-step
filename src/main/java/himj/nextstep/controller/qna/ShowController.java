@@ -12,8 +12,8 @@ public class ShowController implements Controller {
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Long questionId = Long.valueOf(request.getParameter("questionId"));
-        QuestionDao questionDao = new QuestionDao();
-        AnswerDao answerDao = new AnswerDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
+        AnswerDao answerDao = AnswerDao.getInstance();
 
         return jspView("/qna/show.jsp")
                 .addObject("question", questionDao.findById(questionId))

@@ -6,7 +6,18 @@ import java.sql.*;
 import java.util.List;
 
 public class AnswerDao {
-    JdbcTemplate jdbcTemplate = new JdbcTemplate();
+    private static AnswerDao answerDao;
+    private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
+    private AnswerDao() {
+    }
+
+    public static AnswerDao getInstance() {
+        if (answerDao == null) {
+            answerDao = new AnswerDao();
+        }
+        return answerDao;
+    }
 
     public Answer insert(Answer answer) throws SQLException {
         String sql = "INSERT INTO ANSWERS (writer, contents, createdDate, questionId) VALUES (?, ?, ?, ?)";

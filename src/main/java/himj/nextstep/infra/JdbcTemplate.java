@@ -10,6 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcTemplate {
+    private static JdbcTemplate jdbcTemplate;
+
+    private JdbcTemplate() {
+    }
+
+    public static JdbcTemplate getInstance() {
+        if (jdbcTemplate == null) {
+            jdbcTemplate = new JdbcTemplate();
+        }
+        return jdbcTemplate;
+    }
+
     public void executeUpdate(String sql, Object... parameters) throws DataAccessException {
         try(Connection conn = ConnectionManager.getConnection();
             PreparedStatement pstmt = conn.prepareStatement(sql)) {

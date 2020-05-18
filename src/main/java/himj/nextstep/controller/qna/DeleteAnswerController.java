@@ -12,7 +12,7 @@ import java.io.IOException;
 public class DeleteAnswerController implements Controller {
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        AnswerDao answerDao = new AnswerDao();
+        AnswerDao answerDao = AnswerDao.getInstance();
         Result result;
         try {
             answerDao.deleteAnswer(Long.parseLong(request.getParameter("answerId")));

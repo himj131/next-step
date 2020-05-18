@@ -14,7 +14,7 @@ public class QuestionUpdateFormController implements Controller {
 
     @Override
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         UserDao userDao = new UserDao();
 
         User user = (User) request.getSession().getAttribute("user");

@@ -23,7 +23,7 @@ public class QuestionsUpdateController implements Controller {
 
         log.debug("question : {}", question);
 
-        QuestionDao questionDao = new QuestionDao();
+        QuestionDao questionDao = QuestionDao.getInstance();
         questionDao.update(Long.parseLong(request.getParameter("questionId")), question);
 
         return jspView("redirect:/");

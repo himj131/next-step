@@ -84,4 +84,8 @@ public class Question {
             return false;
         return true;
     }
+
+    public boolean isSameUser(User user) {
+        return user.isSameUser(this.writer);
+    }
 }
