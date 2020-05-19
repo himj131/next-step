@@ -22,7 +22,7 @@ class QuestionDaoTest {
 
     @Test
     public void findAll() throws Exception {
-        QuestionDao questionDao = QuestionDao.getInstance();
+        JdbcQuestionDao questionDao = JdbcQuestionDao.getInstance();
         List<Question> questions = questionDao.findAll();
         assertEquals(8, questions.size());
     }

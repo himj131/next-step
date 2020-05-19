@@ -15,7 +15,7 @@ public class LegacyHandlerMapping implements HandlerMapping {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
     private static Map<String, Controller> mappings = new HashMap<String, Controller>();
     void initMapping(){
-        mappings.put("/", new HomeController());
+//        mappings.put("/", new HomeController());
 
         /** user */
 //        mappings.put("/users/form", new ForwardController("/user/createForm.jsp"));
@@ -29,16 +29,16 @@ public class LegacyHandlerMapping implements HandlerMapping {
 //        mappings.put("/users/update", new UpdateUserController());
 
         /** qna */
-        mappings.put("/qna/show", new ShowController());
-        mappings.put("/qna/form", new QuestionFormController());
-        mappings.put("/qna/updateForm", new QuestionUpdateFormController());
-        mappings.put("/api/qna/questions", new QuestionListController());
-        mappings.put("/api/qna/addQuestion", new AddQuestionController());
-        mappings.put("/api/qna/updateQuestion", new QuestionsUpdateController());
-        mappings.put("/qna/deleteQuestion", new DeleteQuestionJspController());
-        mappings.put("/api/qna/deleteQuestion", new DeleteQuestionJsonController());
-        mappings.put("/api/qna/addAnswer", new AddAnswerController());
-        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
+//        mappings.put("/qna/show", new ShowController());
+//        mappings.put("/qna/form", new QuestionFormController());
+//        mappings.put("/qna/updateForm", new QuestionUpdateFormController());
+//        mappings.put("/api/qna/questions", new QuestionListController());
+//        mappings.put("/api/qna/addQuestion", new AddQuestionController());
+//        mappings.put("/api/qna/updateQuestion", new QuestionsUpdateController());
+//        mappings.put("/qna/deleteQuestion", new DeleteQuestionJspController());
+//        mappings.put("/api/qna/deleteQuestion", new DeleteQuestionJsonController());
+//        mappings.put("/api/qna/addAnswer", new AddAnswerController());
+//        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
         logger.info("Initialized Request Mapping!");
     }
 
