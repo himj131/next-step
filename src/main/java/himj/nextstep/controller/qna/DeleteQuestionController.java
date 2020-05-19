@@ -1,6 +1,8 @@
 package himj.nextstep.controller.qna;
 
 import himj.nextstep.controller.Controller;
+import himj.nextstep.infra.AnswerDao;
+import himj.nextstep.infra.QuestionDao;
 import himj.nextstep.model.Result;
 import himj.nextstep.mvc.ModelAndView;
 import himj.nextstep.service.CannotDeleteException;
@@ -11,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class DeleteQuestionController implements Controller {
-    private QnaService qnaService = QnaService.getInstance();
+    private QnaService qnaService = QnaService.getInstance(QuestionDao.getInstance(), AnswerDao.getInstance());
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
