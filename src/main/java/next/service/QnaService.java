@@ -1,7 +1,5 @@
 package next.service;
 
-import java.util.List;
-
 import next.CannotDeleteException;
 import next.dao.AnswerDao;
 import next.dao.QuestionDao;
@@ -9,18 +7,22 @@ import next.model.Answer;
 import next.model.Question;
 import next.model.User;
 
+import java.util.List;
+
 public class QnaService {
     private static QnaService qnaService;
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private AnswerDao answerDao = AnswerDao.getInstance();
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
 
-    private QnaService() {
+    private QnaService(QuestionDao questionDao, AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
     }
 
-    public static QnaService getInstance() {
+    public static QnaService getInstance(QuestionDao questionDao, AnswerDao answerDao) {
         if (qnaService == null) {
-            qnaService = new QnaService();
+            qnaService = new QnaService(questionDao, answerDao);
         }
         return qnaService;
     }
