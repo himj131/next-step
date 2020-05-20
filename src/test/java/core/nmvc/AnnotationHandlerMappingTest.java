@@ -1,12 +1,10 @@
 package core.nmvc;
-
-import himj.nextstep.mvc.ModelAndView;
-import himj.nextstep.nmvc.AnnotationHandlerMapping;
-import himj.nextstep.nmvc.HandlerExecution;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import core.mvc.ModelAndView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -16,7 +14,7 @@ public class AnnotationHandlerMappingTest {
 
     @BeforeEach
     public void setup() {
-        handlerMapping = new AnnotationHandlerMapping("himj.nextstep.nmvc");
+        handlerMapping = new AnnotationHandlerMapping("core.nmvc");
         handlerMapping.initialize();
 
         response = new MockHttpServletResponse();
@@ -48,4 +46,5 @@ public class AnnotationHandlerMappingTest {
         mav.getView().render(mav.getModel(), request, response);
         assertEquals("/users", response.getRedirectedUrl());
     }
+
 }

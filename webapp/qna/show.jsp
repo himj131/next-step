@@ -9,9 +9,13 @@
 </head>
 <body>
 <%@ include file="/include/navigation.jspf" %>
+
 <div class="container" id="main">
 	<div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
 		<div class="panel panel-default">
+			<c:if test="${not empty errorMessage}">
+            <div class="alert alert-danger" role="alert">${errorMessage}</div>
+            </c:if>		
 			<header class="qna-header">
 				<h2 class="qna-title">${question.title}</h2>
 			</header>
@@ -38,8 +42,8 @@
 								<a class="link-modify-article" href="/qna/updateForm?questionId=${question.questionId}">수정</a>
 							</li>
 							<li>
-								<form class="form-delete" action="/qna/deleteQuestion?questionId=${question.questionId}" method="POST">
-									<input type="hidden" name="_method" value="DELETE">
+								<form class="form-delete" action="/qna/delete" method="POST">
+									<input type="hidden" name="questionId" value="${question.questionId}" />
 									<button class="link-delete-article" type="submit">삭제</button>
 								</form>
 							</li>
@@ -54,7 +58,6 @@
 					<div class="qna-comment-slipp">
 						<p class="qna-comment-count"><strong>${question.countOfComment}</strong>개의 의견</p>
 						<div class="qna-comment-slipp-articles">
-
 							<c:forEach items="${answers}" var="each">
 							<article class="article">
 								<div class="article-header">
@@ -85,17 +88,14 @@
 							</article>
                             </c:forEach>
 							<div class="answerWrite">
-								<form name="answer" method="post" id = "answer">
-									<input type="hidden" name="questionId" value="${question.questionId}">
-									<div class="form-group col-lg-4" style="padding-top:10px;">
-										<input class="form-control" id="writer" name="writer" placeholder="이름">
-									</div>
-									<div class="form-group col-lg-12">
-										<textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
-									</div>
-									<input class="btn btn-success pull-right" type="submit" value="답변하기" />
-									<div class="clearfix" />
-								</form>
+                            <form name="answer" method="post">
+								<input type="hidden" name="questionId" value="${question.questionId}">
+								<div class="form-group col-lg-12">
+									<textarea name="contents" id="contents" class="form-control" placeholder=""></textarea>
+								</div>
+								<input class="btn btn-success pull-right" type="submit" value="답변하기" />
+								<div class="clearfix" />
+							</form>
 							</div>
 						</div>
 					</div>
@@ -120,21 +120,20 @@
 			{2}
 		</div>
 		<div class="article-util">
-			<ul class="article-util-list">
-				<li>
-					<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
-				</li>
-				<li>
-					<form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
-						<input type="hidden" name="answerId" value="{4}" />
-						<button type="submit" class="link-delete-article">삭제</button>
-					</form>
-				</li>
-			</ul>
+		<ul class="article-util-list">
+			<li>
+				<a class="link-modify-article" href="/api/qna/updateAnswer/{3}">수정</a>
+			</li>
+			<li>
+				<form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
+					<input type="hidden" name="answerId" value="{4}" />
+					<button type="submit" class="link-delete-article">삭제</button>
+				</form>
+			</li>
+		</ul>
 		</div>
 	</article>
 </script>
-
 <%@ include file="/include/footer.jspf" %>
 </body>
 </html>

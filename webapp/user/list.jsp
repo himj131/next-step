@@ -1,10 +1,13 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <!DOCTYPE html>
 <html lang="kr">
+<head>
+    <%@ include file="/include/header.jspf" %>
+</head>
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<%@ include file="/include/navigation.jspf" %>
 
 <div class="container" id="main">
     <div class="col-md-10 col-md-offset-1">
@@ -19,10 +22,11 @@
                 <c:forEach items="${users}" var="user" varStatus="status">
                     <tr>
                         <th scope="row">${status.count}</th>
-                        <th>${user.userId}</th>
-                        <th>${user.name}</th>
-                        <th>${user.email}</th>
-                        <th><a href="/users/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a></th>
+                        <td>${user.userId}</td>
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td><a href="/users/updateForm?userId=${user.userId}" class="btn btn-success" role="button">수정</a>
+                        </td>
                     </tr>
                 </c:forEach>
                 </tbody>
@@ -30,6 +34,7 @@
         </div>
     </div>
 </div>
+
+<%@ include file="/include/footer.jspf" %>
 </body>
 </html>
-
