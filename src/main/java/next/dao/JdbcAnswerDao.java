@@ -14,18 +14,7 @@ import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 
 public class JdbcAnswerDao implements AnswerDao {
-    private static JdbcAnswerDao answerDao;
     private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-
-    private JdbcAnswerDao() {
-    }
-
-    public static JdbcAnswerDao getInstance() {
-        if (JdbcAnswerDao.answerDao == null) {
-            JdbcAnswerDao.answerDao = new JdbcAnswerDao();
-        }
-        return JdbcAnswerDao.answerDao;
-    }
 
     @Override
     public Answer insert(Answer answer) {

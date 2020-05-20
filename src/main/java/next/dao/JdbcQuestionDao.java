@@ -14,18 +14,7 @@ import core.jdbc.PreparedStatementCreator;
 import core.jdbc.RowMapper;
 
 public class JdbcQuestionDao implements QuestionDao {
-    private static JdbcQuestionDao questionDao;
     private JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
-
-    private JdbcQuestionDao() {
-    }
-
-    public static JdbcQuestionDao getInstance() {
-        if (JdbcQuestionDao.questionDao == null) {
-            JdbcQuestionDao.questionDao = new JdbcQuestionDao();
-        }
-        return JdbcQuestionDao.questionDao;
-    }
 
     @Override
     public Question insert(Question question) {

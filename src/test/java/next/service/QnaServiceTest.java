@@ -20,7 +20,7 @@ class QnaServiceTest {
     void setUp() {
         mockQuestionDao = new MockQuestionDao();
         mockAnswerDao = new MockAnswerDao();
-        qnaService = QnaService.getInstance(mockQuestionDao, mockAnswerDao);
+        qnaService = new QnaService(mockQuestionDao, mockAnswerDao);
     }
 
     @Test
