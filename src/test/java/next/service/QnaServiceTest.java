@@ -33,6 +33,7 @@ class QnaServiceTest {
     @Test
     void deleteQuestion_다른사용자() {
         Question quesiton = newQuestion(1L, "mj");
+        mockQuestionDao.insert(quesiton);
         assertThrows(CannotDeleteException.class, () -> {
             qnaService.deleteQuestion(1L, newUser("userId"));
         });
