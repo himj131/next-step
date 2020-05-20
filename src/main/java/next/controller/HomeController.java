@@ -8,10 +8,15 @@ import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.mvc.ModelAndView;
 import core.nmvc.AbstractNewController;
+import next.dao.QuestionDao;
 
 @Controller
 public class HomeController extends AbstractNewController {
-    private JdbcQuestionDao questionDao = JdbcQuestionDao.getInstance();
+    private QuestionDao questionDao;
+
+    public HomeController(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
 
     @RequestMapping("/")
     public ModelAndView execute(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -5,12 +5,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import next.controller.UserSessionUtils;
 import next.dao.JdbcQuestionDao;
+import next.dao.QuestionDao;
 import next.model.Question;
 import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 
 public class UpdateFormQuestionController extends AbstractController {
-    private JdbcQuestionDao questionDao = JdbcQuestionDao.getInstance();
+    private QuestionDao questionDao;
+
+    public UpdateFormQuestionController(QuestionDao questionDao) {
+        this.questionDao = questionDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
